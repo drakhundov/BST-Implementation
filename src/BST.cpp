@@ -52,18 +52,48 @@ void BST::insert(int data) {
   }
 }
 
-std::vector<BST_node *> BST::inorder_trav() const {
+void BST::insertRecur(int data) { root = BST::_insertRecurHelper(root, data); }
+
+BST_node *BST::_insertRecurHelper(BST_node *node, int data) {
+  if (node == nullptr) {
+    return new BST_node{data};
+  }
+  if (data > node->data) {
+    node->right = _insertRecurHelper(node->right, data);
+  } else if (data < node->data) {
+    node->left = _insertRecurHelper(node->left, data);
+  } else {
+    //! data == node->data
+    node->cnt++;
+  }
+  return node;
+}
+
+BST_node *BST::find(int item, BST_node *refNode) const {
+  if (refNode == nullptr) {  // Default value.
+    refNode = root;
+  }
+  if (item > refNode->data) {
+    return find(item, refNode->right);
+  } else if (item < refNode->data) {
+    return find(item, refNode->left);
+  } else {
+    return refNode;
+  }
+}
+
+std::vector<BST_node *> BST::inorderTrav() const {
   std::vector<BST_node *> trav;
-  inorder_trav(root, trav);
+  _inorderTravHelper(root, trav);
   return trav;
 }
 
-void BST::inorder_trav(BST_node *n, std::vector<BST_node *> &trav) const {
+void BST::_inorderTravHelper(BST_node *n, std::vector<BST_node *> &trav) const {
   if (n->left != nullptr) {
-    inorder_trav(n->left, trav);
+    _inorderTravHelper(n->left, trav);
   }
   trav.push_back(n);
   if (n->right != nullptr) {
-    inorder_trav(n->right, trav);
+    _inorderTravHelper(n->right, trav);
   }
 }

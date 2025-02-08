@@ -17,12 +17,15 @@ class BST {
   ~BST();
   BST_node *get_root() const;
   void insert(int);
-  std::vector<BST_node *> inorder_trav() const;
+  void insertRecur(int);                            // Recursive insertion.
+  BST_node *find(int, BST_node * = nullptr) const;  // TODO
+  std::vector<BST_node *> inorderTrav() const;
 
  private:
   BST_node *root;
   void destroy(BST_node *);
-  void inorder_trav(BST_node *, std::vector<BST_node *> &) const;
+  void _inorderTravHelper(BST_node *, std::vector<BST_node *> &) const;
+  BST_node *_insertRecurHelper(BST_node *, int);
 };
 
 #endif
