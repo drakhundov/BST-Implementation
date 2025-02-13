@@ -7,8 +7,9 @@ struct BST_node {
   int data, cnt;
   BST_node *left;
   BST_node *right;
-  BST_node(int);
-  BST_node(int, int);
+  BST_node *parent;
+  BST_node(int data);
+  BST_node(int data, int cnt);
 };
 
 class BST {
@@ -16,16 +17,30 @@ class BST {
   BST();
   ~BST();
   BST_node *get_root() const;
-  void insert(int);
-  void insertRecur(int);                            // Recursive insertion.
-  BST_node *find(int, BST_node * = nullptr) const;  // TODO
-  std::vector<BST_node *> inorderTrav() const;
+  // * `remove` and `insert` might use
+  // * both recursive and pointer-based
+  // * methods depending on the height.
+  void insert(int data);
+  BST_node *find(int data, BST_node *node = nullptr) const;
+  void remove(int item);
+  void inorderTrav(std::vector<BST_node *> &trav) const;
+  void preorderTrav(std::vector<BST_node *> &trav) const;
+  void postorderTrav(std::vector<BST_node *> &trav) const;
+  BST_node *findMin(BST_node *node) const;
+  BST_node *findMax(BST_node *node) const;
+  int height() const;
 
  private:
   BST_node *root;
-  void destroy(BST_node *);
-  void _inorderTravHelper(BST_node *, std::vector<BST_node *> &) const;
-  BST_node *_insertRecurHelper(BST_node *, int);
+  void destroy(BST_node *node);
+  void insertPtrMethod(int data);
+  BST_node *insertRecurMethod(BST_node *node, int data);
+  void removePtrMethod(BST_node *node, int item);
+  BST_node *removeRecurMethod(BST_node *node, int item);
+  void inorderTrav(std::vector<BST_node *> &trav, BST_node *node) const;
+  void preorderTrav(std::vector<BST_node *> &trav, BST_node *node) const;
+  void postorderTrav(std::vector<BST_node *> &trav, BST_node *node) const;
+  int height(BST_node *node) const;
 };
 
 #endif
